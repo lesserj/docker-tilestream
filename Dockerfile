@@ -1,8 +1,20 @@
-FROM centos:centos7
+FROM 	centos:centos7
 
-# Enable EPEL for Node.js
-RUN     yum install -y epel-release
-# Install Node.js and npm
-RUN     yum install -y nodejs
+RUN     yum install -y epel-release && \
+	yum group install -y "Development Tools" && \
+	yum install -y nodejs npm git pip 
 
-EXPOSE 8080
+run 	pip install awscli 
+
+RUN	git clone https://github.com/mapbox/tilestream.git && \
+	cd tilestream && \
+	npm install
+
+WORKDIR	tilestream
+ADD	config.json tilestream/ 
+
+EXPOSE 	8888
+
+CMD	aws s3 sync $MBTILES_S3_BUCKET && \
+	node index.js start --config config.json
+
