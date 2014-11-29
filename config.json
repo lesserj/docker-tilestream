@@ -1,0 +1,6 @@
+{
+  "host": ["127.0.0.1"],
+  "tileHost": "localhost",
+  "tilePort": 8888,
+  "uiPort": 8888
+}
